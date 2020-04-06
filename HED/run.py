@@ -10,7 +10,6 @@ import PIL
 import PIL.Image
 import sys
 import glob
-from resizeimage import resizeimage
 
 ##########################################################
 
@@ -154,7 +153,7 @@ if __name__ == '__main__':
 		outputImageFile = arguments_strOut + "/" +"".join(imageFile.split('/')[-1:]).split('.')[0] + "_out." + str(imageFile.split('.')[-1:][0])
 		print(outputImageFile)
 
-		tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(imageFile).resize((480, 320)))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
+		tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(imageFile))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
 
 		tenOutput = estimate(tenInput)
 
