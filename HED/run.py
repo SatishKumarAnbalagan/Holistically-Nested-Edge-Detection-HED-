@@ -10,6 +10,7 @@ import PIL
 import PIL.Image
 import sys
 import glob
+from resizeimage import resizeimage
 
 ##########################################################
 
@@ -139,8 +140,8 @@ def estimate(tenInput):
 	intWidth = tenInput.shape[2]
 	intHeight = tenInput.shape[1]
 
-	#assert(intWidth == 480) # remember that there is no guarantee for correctness, comment this line out if you acknowledge this and want to continue
-	#assert(intHeight == 320) # remember that there is no guarantee for correctness, comment this line out if you acknowledge this and want to continue
+	assert(intWidth == 480) # remember that there is no guarantee for correctness, comment this line out if you acknowledge this and want to continue
+	assert(intHeight == 320) # remember that there is no guarantee for correctness, comment this line out if you acknowledge this and want to continue
 
 	return netNetwork(tenInput.cuda().view(1, 3, intHeight, intWidth))[0, :, :, :].cpu()
 # end
@@ -152,10 +153,15 @@ if __name__ == '__main__':
 		print(imageFile)
 		outputImageFile = arguments_strOut + "/" +"".join(imageFile.split('/')[-1:]).split('.')[0] + "_out." + str(imageFile.split('.')[-1:][0])
 		print(outputImageFile)
+		
+		with open(imageFile, 'r+b') as f:
+		    with PIL.Image.open(f) as image:
+			cover = resizeimage.resize_cover(image, [480, 320])
+			cover.save(imageFile, image.format)
 
-		tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(imageFile))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
+			tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(imageFile))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
 
-		tenOutput = estimate(tenInput)
+			tenOutput = estimate(tenInput)
 
-		PIL.Image.fromarray((tenOutput.clamp(0.0, 1.0).numpy().transpose(1, 2, 0)[:, :, 0] * 255.0).astype(numpy.uint8)).save(outputImageFile)
+			PIL.Image.fromarray((tenOutput.clamp(0.0, 1.0).numpy().transpose(1, 2, 0)[:, :, 0] * 255.0).astype(numpy.uint8)).save(outputImageFile)
 # end
