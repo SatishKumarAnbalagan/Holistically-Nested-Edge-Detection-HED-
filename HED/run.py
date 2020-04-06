@@ -148,7 +148,7 @@ def estimate(tenInput):
 ##########################################################
 
 if __name__ == '__main__':
-	for imageFile in glob.glob(arguments_strIn+'/*')
+	for imageFile in glob.glob(arguments_strIn+'/*'):
 		print(imageFile)
 		outputImageFile = arguments_strOut + "/" +"".join(imageFile.split('/')[-1:]).split('.')[0] + "_out." + str(imageFile.split('.')[-1:][0])
 		print(outputImageFile)
