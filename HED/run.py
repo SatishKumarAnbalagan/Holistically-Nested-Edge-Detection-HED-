@@ -152,7 +152,7 @@ if __name__ == '__main__':
 		print(imageFile)
 		outputImageFile = arguments_strOut + "/" +"".join(imageFile.split('/')[-1:]).split('.')[0] + "_out." + str(imageFile.split('.')[-1:][0])
 		print(outputImageFile)
-		with PIL.Image.open(imageFile) as inImage
+		with PIL.Image.open(imageFile) as inImage:
 			cover = inImage.convert('RGB')
 			cover = cover.resize((480, 320))
 			cover.save(imageFile, inImage.format)
