@@ -152,10 +152,14 @@ if __name__ == '__main__':
 		print(imageFile)
 		outputImageFile = arguments_strOut + "/" +"".join(imageFile.split('/')[-1:]).split('.')[0] + "_out." + str(imageFile.split('.')[-1:][0])
 		print(outputImageFile)
+		with PIL.Image.open(imageFile) as inImage
+			cover = inImage.convert('RGB')
+			cover = cover.resize((480, 320))
+			cover.save(imageFile, inImage.format)
 
-		tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(imageFile))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
+			tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(imageFile))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
 
-		tenOutput = estimate(tenInput)
+			tenOutput = estimate(tenInput)
 
-		PIL.Image.fromarray((tenOutput.clamp(0.0, 1.0).numpy().transpose(1, 2, 0)[:, :, 0] * 255.0).astype(numpy.uint8)).save(outputImageFile)
+			PIL.Image.fromarray((tenOutput.clamp(0.0, 1.0).numpy().transpose(1, 2, 0)[:, :, 0] * 255.0).astype(numpy.uint8)).save(outputImageFile)
 # end
