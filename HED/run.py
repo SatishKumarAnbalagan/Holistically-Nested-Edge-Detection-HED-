@@ -21,8 +21,8 @@ torch.backends.cudnn.enabled = True # make sure to use cudnn for computational p
 ##########################################################
 
 arguments_strModel = 'bsds500'
-arguments_strIn = './images/sample.png'
-arguments_strOut = './out.png'
+arguments_strIn = './Repo/HED/input/bird.jpeg'
+arguments_strOut = './Repo/HED/input/out.png'
 
 for strOption, strArgument in getopt.getopt(sys.argv[1:], '', [ strParameter[2:] + '=' for strParameter in sys.argv[1::2] ])[0]:
 	if strOption == '--model' and strArgument != '': arguments_strModel = strArgument # which model to use
