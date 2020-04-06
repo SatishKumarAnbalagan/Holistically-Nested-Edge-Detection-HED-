@@ -9,6 +9,7 @@ import os
 import PIL
 import PIL.Image
 import sys
+import glob
 
 ##########################################################
 
@@ -21,8 +22,8 @@ torch.backends.cudnn.enabled = True # make sure to use cudnn for computational p
 ##########################################################
 
 arguments_strModel = 'bsds500'
-arguments_strIn = './Repo/HED/input/bird.jpeg'
-arguments_strOut = './Repo/HED/input/out.png'
+arguments_strIn = './Repo/HED/input'
+arguments_strOut = './Repo/HED/output'
 
 for strOption, strArgument in getopt.getopt(sys.argv[1:], '', [ strParameter[2:] + '=' for strParameter in sys.argv[1::2] ])[0]:
 	if strOption == '--model' and strArgument != '': arguments_strModel = strArgument # which model to use
@@ -147,9 +148,14 @@ def estimate(tenInput):
 ##########################################################
 
 if __name__ == '__main__':
-	tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(arguments_strIn))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
+	for imageFile in glob.glob(arguments_strIn+'/*')
+		print(imageFile)
+		outputImageFile = arguments_strOut + "/" +"".join(imageFile.split('/')[-1:]).split('.')[0] + "_out." + str(imageFile.split('.')[-1:][0])
+		print(outputImageFile)
 
-	tenOutput = estimate(tenInput)
+		tenInput = torch.FloatTensor(numpy.array(PIL.Image.open(imageFile))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
 
-	PIL.Image.fromarray((tenOutput.clamp(0.0, 1.0).numpy().transpose(1, 2, 0)[:, :, 0] * 255.0).astype(numpy.uint8)).save(arguments_strOut)
+		tenOutput = estimate(tenInput)
+
+		PIL.Image.fromarray((tenOutput.clamp(0.0, 1.0).numpy().transpose(1, 2, 0)[:, :, 0] * 255.0).astype(numpy.uint8)).save(outputImageFile)
 # end
