@@ -1,5 +1,3 @@
-# EECE7398_DeepLearningInEmbeddedSystems - Semantic Segmentation
-
 # Holistically-Nested Edge Detection (HED)
 This is a personal reimplementation of Holistically-Nested Edge Detection [1] using PyTorch.
 
